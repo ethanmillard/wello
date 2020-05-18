@@ -62,8 +62,8 @@ namespace Wello.Data.Repositories
                 throw new ArgumentOutOfRangeException(nameof(OrderModel), $"No order with the Id of '{orderModel.Id}'");
             }
 
+            order.AmountDue = orderModel.AmountDue;
             order.AmountPaid = orderModel.AmountPaid;
-            order.AmountOverPaid = orderModel.AmountOverPaid;
         }
 
         /// <summary>

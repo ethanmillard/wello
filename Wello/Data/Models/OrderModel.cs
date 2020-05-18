@@ -13,11 +13,11 @@
         /// <summary>
         /// Gets or sets the amount paid for the order.
         /// </summary>
-        public int AmountPaid { get; set; }
+        public double AmountPaid { get; set; }
 
         /// <summary>
-        /// Gets or sets the amount over paid that should be returned to the user.
+        /// Gets or sets the amount due for the complete coffee order.
         /// </summary>
-        public int AmountOverPaid { get; set; }
+        public double AmountDue { get; set; }
     }
 }

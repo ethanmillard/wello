@@ -38,7 +38,11 @@ namespace Wello.Data.Repositories
         /// <returns>A newly created <see cref="CoffeeModel"/>.</returns>
         public CoffeeModel Create(CoffeeModel coffeeModel)
         {
-            var lastKey = _coffees.LastOrDefault().Key;
+            var lastKey = 0;
+            if (_coffees.Any())
+            {
+                lastKey = _coffees.Keys.Max();
+            }
 
             coffeeModel.Id = lastKey + 1;
 
@@ -70,6 +74,16 @@ namespace Wello.Data.Repositories
         public void Delete(int id)
         {
             _coffees.Remove(id);
+        }
+
+        /// <summary>
+        /// Retrieves a collection of <see cref="CoffeeModel"/>s by order id.
+        /// </summary>
+        /// <param name="id">The unique identifier of the order.</param>
+        /// <returns>A list of <see cref="CoffeeModel"/>s.</returns>
+        public List<CoffeeModel> GetByOrderId(int id)
+        {
+            return _coffees.Where(c => c.Value.OrderId == id).Select(c => c.Value).ToList();
         }
     }
 }

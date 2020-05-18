@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Wello.Data.Models;
 
 namespace Wello.Data.Interfaces
@@ -34,5 +35,12 @@ namespace Wello.Data.Interfaces
         /// </summary>
         /// <param name="id">The unique identifier of the <see cref="CoffeeModel"/> to delete.</param>
         void Delete(int id);
+
+        /// <summary>
+        /// Retrieves a collection of <see cref="CoffeeModel"/>s by order id.
+        /// </summary>
+        /// <param name="id">The unique identifier of the order.</param>
+        /// <returns>A list of <see cref="CoffeeModel"/>s.</returns>
+        List<CoffeeModel> GetByOrderId(int id);
     }
 }

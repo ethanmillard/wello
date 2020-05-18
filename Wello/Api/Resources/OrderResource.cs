@@ -12,5 +12,17 @@ namespace Wello.Api.Resources
         /// </summary>
         [JsonPropertyName("id")]
         public int Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount due for the order.
+        /// </summary>
+        [JsonPropertyName("amountDue")]
+        public double AmountDue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the amount paid for the order.
+        /// </summary>
+        [JsonPropertyName("amountPaid")]
+        public double AmountPaid { get; set; }
     }
 }

@@ -58,6 +58,30 @@ namespace Wello.Api.Controllers
             }
         }
 
+        [HttpPut]
+        public IActionResult Put([FromBody] CoffeeResource coffeeResource)
+        {
+            try
+            {
+                var coffeeModel = new CoffeeModel
+                {
+                    Id = coffeeResource.Id,
+                    AmountOfCream = coffeeResource.AmountOfCream,
+                    AmountOfSugar = coffeeResource.AmountOfSugar,
+                    OrderId = coffeeResource.OrderId,
+                    Size = coffeeResource.Size
+                };
+
+                _coffeeRepository.Update(coffeeModel);
+
+                return Ok();
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                return NotFound(e.Message);
+            }
+        }
+
         [HttpDelete]
         [Route("{id}")]
         public IActionResult Delete(int id)
