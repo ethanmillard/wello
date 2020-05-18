@@ -17,26 +17,14 @@ namespace Wello.Data.Repositories
         private readonly Dictionary<int, CoffeeModel> _coffees = new Dictionary<int, CoffeeModel>();
 
         /// <summary>
-        /// Finds an <see cref="CoffeeModel"/> based on the unique identifier.
-        /// </summary>
-        /// <param name="id">The unique identifier of an <see cref="CoffeeModel"/></param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when no coffee matches the unique identifier.</exception>
-        /// <returns>An <see cref="CoffeeModel"/>.</returns>
-        public CoffeeModel Find(int id)
-        {
-            if (!_coffees.TryGetValue(id, out var coffee))
-            {
-                throw new ArgumentOutOfRangeException(nameof(CoffeeModel), $"No coffee with the Id of '{id}'");
-            }
-
-            return coffee;
-        }
-
-        /// <summary>
         /// Creates a new <see cref="CoffeeModel"/>.
         /// </summary>
+        /// <param name="orderId">The unique identifier of the order the coffee is for.</param>
+        /// <param name="size">The size of the coffee.</param>
+        /// <param name="amountOfCream">The amount of cream for the coffee.</param>
+        /// <param name="amountOfSugar">The amount of sugar for the coffee.</param>
         /// <returns>A newly created <see cref="CoffeeModel"/>.</returns>
-        public CoffeeModel Create(CoffeeModel coffeeModel)
+        public CoffeeModel Create(int orderId, string size, int amountOfCream, int amountOfSugar)
         {
             var lastKey = 0;
             if (_coffees.Any())
@@ -44,7 +32,14 @@ namespace Wello.Data.Repositories
                 lastKey = _coffees.Keys.Max();
             }
 
-            coffeeModel.Id = lastKey + 1;
+            var coffeeModel = new CoffeeModel
+            {
+                AmountOfCream = amountOfCream,
+                AmountOfSugar = amountOfSugar,
+                OrderId = orderId,
+                Size = size,
+                Id = lastKey + 1
+            };
 
             _coffees.Add(coffeeModel.Id, coffeeModel);
 
@@ -54,17 +49,22 @@ namespace Wello.Data.Repositories
         /// <summary>
         /// Updates an <see cref="CoffeeModel"/>.
         /// </summary>
-        /// <param name="coffeeModel">The <see cref="CoffeeModel"/> containing the updated properties.</param>
+        /// <param name="coffeeId">The unique identifier of the coffee.</param>
+        /// <param name="amountOfCream">The amount of cream for the coffee.</param>
+        /// <param name="amountOfSugar">The amount of sugar for the coffee.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when no <see cref="CoffeeModel"/> matches the unique identifier.</exception>
-        public void Update(CoffeeModel coffeeModel)
+        /// <returns>A newly created <see cref="CoffeeModel"/>.</returns>
+        public CoffeeModel Update(int coffeeId, int amountOfCream, int amountOfSugar)
         {
-            if (!_coffees.TryGetValue(coffeeModel.Id, out var coffee))
+            if (!_coffees.TryGetValue(coffeeId, out var coffee))
             {
-                throw new ArgumentOutOfRangeException(nameof(CoffeeModel), $"No coffee with the Id of '{coffeeModel.Id}'");
+                throw new ArgumentOutOfRangeException(nameof(CoffeeModel), $"No coffee with the Id of '{coffeeId}'");
             }
-               
-            coffee.AmountOfCream = coffeeModel.AmountOfCream;
-            coffee.AmountOfSugar = coffeeModel.AmountOfSugar;
+
+            coffee.AmountOfCream = amountOfCream;
+            coffee.AmountOfSugar = amountOfSugar;
+
+            return coffee;
         }
 
         /// <summary>

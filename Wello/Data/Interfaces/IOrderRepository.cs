@@ -25,14 +25,11 @@ namespace Wello.Data.Interfaces
         /// <summary>
         /// Updates an <see cref="OrderModel"/>.
         /// </summary>
-        /// <param name="orderModel">The <see cref="OrderModel"/> containing the updated properties.</param>
+        /// <param name="orderId">The unique identifier of the order.</param>
+        /// <param name="amountDue">The total amount due for the order.</param>
+        /// <param name="amountPaid">The amount that has currently been paid on the order.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when no order matches the unique identifier.</exception>
-        void Update(OrderModel orderModel);
-
-        /// <summary>
-        /// Deletes an <see cref="OrderModel"/> based on the unique identifier.
-        /// </summary>
-        /// <param name="id">The unique identifier of the order to delete.</param>
-        void Delete(int id);
+        /// <returns>The <see cref="OrderModel"/>.</returns>
+        OrderModel Update(int orderId, double amountDue, double amountPaid);
     }
 }

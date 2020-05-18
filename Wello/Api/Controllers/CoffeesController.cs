@@ -2,78 +2,54 @@
 using Microsoft.AspNetCore.Mvc;
 using Wello.Api.Resources;
 using Wello.Data.Interfaces;
-using Wello.Data.Models;
 
 namespace Wello.Api.Controllers
 {
+    /// <summary>
+    /// A controller containing all the coffee endpoints.
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
     public class CoffeesController : ControllerBase
     {
         private readonly ICoffeeRepository _coffeeRepository;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CoffeesController"/> class.
+        /// </summary>
+        /// <param name="coffeeRepository"></param>
         public CoffeesController(ICoffeeRepository coffeeRepository)
         {
             _coffeeRepository = coffeeRepository;
         }
 
+        /// <summary>
+        /// Creates a new coffee.
+        /// </summary>
+        /// <param name="coffeeResource">The coffee to create.</param>
+        /// <returns>The newly created coffee.</returns>
         [HttpPost]
         public IActionResult Post([FromBody] CoffeeResource coffeeResource)
         {
-            var coffeeModel = new CoffeeModel
-            {
-                AmountOfCream = coffeeResource.AmountOfCream,
-                AmountOfSugar = coffeeResource.AmountOfCream,
-                OrderId = coffeeResource.OrderId,
-                Size = coffeeResource.Size
-            };
-
-            coffeeModel = _coffeeRepository.Create(coffeeModel);
-
+            var coffeeModel = _coffeeRepository.Create(coffeeResource.OrderId, coffeeResource.Size, coffeeResource.AmountOfCream, coffeeResource.AmountOfSugar);
             coffeeResource.Id = coffeeModel.Id;
 
             return Ok(coffeeResource);
         }
 
-        [HttpPost]
-        [Route("{id}")]
-        public IActionResult Get(int id)
-        {
-            try
-            {
-                var coffeeModel = _coffeeRepository.Find(id);
-
-                return Ok(new CoffeeResource
-                {
-                    Id = coffeeModel.Id,
-                    OrderId = coffeeModel.OrderId,
-                    AmountOfCream = coffeeModel.AmountOfCream,
-                    AmountOfSugar = coffeeModel.AmountOfSugar,
-                    Size = coffeeModel.Size
-                });
-            }
-            catch (ArgumentOutOfRangeException e)
-            {
-                return NotFound(e.Message);
-            }
-        }
-
+        /// <summary>
+        /// Updates the coffee.
+        /// </summary>
+        /// <param name="coffeeId">The unique identifier of the coffee.</param>
+        /// <param name="coffeeResource">The fields of the coffee to update.</param>
+        /// <returns>THe updated coffee.</returns>
         [HttpPut]
-        public IActionResult Put([FromBody] CoffeeResource coffeeResource)
+        [Route("{id}")]
+        public IActionResult Put(int coffeeId, [FromBody] CoffeeResource coffeeResource)
         {
             try
             {
-                var coffeeModel = new CoffeeModel
-                {
-                    Id = coffeeResource.Id,
-                    AmountOfCream = coffeeResource.AmountOfCream,
-                    AmountOfSugar = coffeeResource.AmountOfSugar,
-                    OrderId = coffeeResource.OrderId,
-                    Size = coffeeResource.Size
-                };
-
-                _coffeeRepository.Update(coffeeModel);
-
+                _coffeeRepository.Update(coffeeId, coffeeResource.AmountOfCream, coffeeResource.AmountOfSugar);
                 return Ok();
             }
             catch (ArgumentOutOfRangeException e)
@@ -82,6 +58,10 @@ namespace Wello.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes the coffee.
+        /// </summary>
+        /// <param name="id">The unique identifier of the coffee.</param>
         [HttpDelete]
         [Route("{id}")]
         public IActionResult Delete(int id)

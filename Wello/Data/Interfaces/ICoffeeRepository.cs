@@ -10,27 +10,6 @@ namespace Wello.Data.Interfaces
     public interface ICoffeeRepository
     {
         /// <summary>
-        /// Finds an <see cref="CoffeeModel"/> based on the unique identifier.
-        /// </summary>
-        /// <param name="id">The unique identifier of an <see cref="CoffeeModel"/></param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when no coffee matches the unique identifier.</exception>
-        /// <returns>An <see cref="CoffeeModel"/>.</returns>
-        CoffeeModel Find(int id);
-
-        /// <summary>
-        /// Creates a new <see cref="CoffeeModel"/>.
-        /// </summary>
-        /// <returns>A newly created <see cref="CoffeeModel"/>.</returns>
-        CoffeeModel Create(CoffeeModel coffeeModel);
-
-        /// <summary>
-        /// Updates an <see cref="CoffeeModel"/>.
-        /// </summary>
-        /// <param name="coffeeModel">The <see cref="CoffeeModel"/> containing the updated properties.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Thrown when no <see cref="CoffeeModel"/> matches the unique identifier.</exception>
-        void Update(CoffeeModel coffeeModel);
-
-        /// <summary>
         /// Deletes an <see cref="CoffeeModel"/> based on the unique identifier.
         /// </summary>
         /// <param name="id">The unique identifier of the <see cref="CoffeeModel"/> to delete.</param>
@@ -42,5 +21,25 @@ namespace Wello.Data.Interfaces
         /// <param name="id">The unique identifier of the order.</param>
         /// <returns>A list of <see cref="CoffeeModel"/>s.</returns>
         List<CoffeeModel> GetByOrderId(int id);
+
+        /// <summary>
+        /// Creates a new <see cref="CoffeeModel"/>.
+        /// </summary>
+        /// <param name="orderId">The unique identifier of the order the coffee is for.</param>
+        /// <param name="size">The size of the coffee.</param>
+        /// <param name="amountOfCream">The amount of cream for the coffee.</param>
+        /// <param name="amountOfSugar">The amount of sugar for the coffee.</param>
+        /// <returns>A newly created <see cref="CoffeeModel"/>.</returns>
+        CoffeeModel Create(int orderId, string size, int amountOfCream, int amountOfSugar);
+
+        /// <summary>
+        /// Updates an <see cref="CoffeeModel"/>.
+        /// </summary>
+        /// <param name="coffeeId">The unique identifier of the coffee.</param>
+        /// <param name="amountOfCream">The amount of cream for the coffee.</param>
+        /// <param name="amountOfSugar">The amount of sugar for the coffee.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Thrown when no <see cref="CoffeeModel"/> matches the unique identifier.</exception>
+        /// <returns>A newly created <see cref="CoffeeModel"/>.</returns>
+        CoffeeModel Update(int coffeeId, int amountOfCream, int amountOfSugar);
     }
 }

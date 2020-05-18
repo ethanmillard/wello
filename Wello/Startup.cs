@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Wello.Application;
 using Wello.Data.Interfaces;
 using Wello.Data.Repositories;
 
@@ -22,6 +23,7 @@ namespace Wello
 
             services.AddSingleton<IOrderRepository, OrderRepository>();
             services.AddSingleton<ICoffeeRepository, CoffeeRepository>();
+            services.AddSingleton<IOrderService, OrderService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

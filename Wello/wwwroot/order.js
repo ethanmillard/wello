@@ -124,7 +124,7 @@ updateCoffee = (coffeeRequest) => {
 
     $.ajax({
         type: "PUT",
-        url: url + "coffees",
+        url: url + "coffees/" + coffeeRequest.id,
         data: JSON.stringify(coffeeRequest),
         contentType: "application/json",
         error: (error) => {

@@ -38,7 +38,11 @@ namespace Wello.Data.Repositories
         /// <returns>A newly created <see cref="OrderModel"/>.</returns>
         public OrderModel Create()
         {
-            var lastKey = _orders.LastOrDefault().Key;
+            var lastKey = 0;
+            if (_orders.Any())
+            {
+                lastKey = _orders.Keys.Max();
+            }
 
             var order = new OrderModel
             {
@@ -53,26 +57,22 @@ namespace Wello.Data.Repositories
         /// <summary>
         /// Updates an <see cref="OrderModel"/>.
         /// </summary>
-        /// <param name="orderModel">The <see cref="OrderModel"/> containing the updated properties.</param>
+        /// <param name="orderId">The unique identifier of the order.</param>
+        /// <param name="amountDue">The total amount due for the order.</param>
+        /// <param name="amountPaid">The amount that has currently been paid on the order.</param>
         /// <exception cref="ArgumentOutOfRangeException">Thrown when no order matches the unique identifier.</exception>
-        public void Update(OrderModel orderModel)
+        /// <returns>The <see cref="OrderModel"/>.</returns>
+        public OrderModel Update(int orderId, double amountDue, double amountPaid)
         {
-            if (!_orders.TryGetValue(orderModel.Id, out var order))
+            if (!_orders.TryGetValue(orderId, out var order))
             {
-                throw new ArgumentOutOfRangeException(nameof(OrderModel), $"No order with the Id of '{orderModel.Id}'");
+                throw new ArgumentOutOfRangeException(nameof(OrderModel), $"No order with the Id of '{orderId}'");
             }
 
-            order.AmountDue = orderModel.AmountDue;
-            order.AmountPaid = orderModel.AmountPaid;
-        }
+            order.AmountDue = amountDue;
+            order.AmountPaid = amountPaid;
 
-        /// <summary>
-        /// Deletes an <see cref="OrderModel"/> based on the unique identifier.
-        /// </summary>
-        /// <param name="id">The unique identifier of the order to delete.</param>
-        public void Delete(int id)
-        {
-            _orders.Remove(id);
+            return order;
         }
     }
 }
